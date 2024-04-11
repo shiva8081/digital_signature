@@ -30,14 +30,20 @@ function App() {
     // }
 
     const input = document.getElementById('pdf-content'); 
-    // Specify the id of the element you want to convert to PDF
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.save('downloaded-file.pdf'); 
-      // Specify the name of the downloaded PDF file
-    });
+// Specify the id of the element you want to convert to PDF
+html2canvas(input).then((canvas) => {
+  const imgData = canvas.toDataURL('image/png');
+   // Create new PDF
+   const pdf = new jsPDF('p', 'mm', 'a4');
+   const imgWidth = pdf.internal.pageSize.getWidth(); // Get PDF page width
+   const imgHeight = canvas.height * imgWidth / canvas.width; // Calculate image height to maintain aspect ratio
+
+   // Add image to PDF
+   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  pdf.save('downloaded-file.pdf'); 
+  // Specify the name of the downloaded PDF file
+});
+
   };
   return (
     <>
